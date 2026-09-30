@@ -1,0 +1,132 @@
+{
+  "U_Wohnung_EG_2": {
+    "grp": "1"
+  },
+  "U_WE_V_1_3": {
+    "grp": "1"
+  },
+  "U_WE_V_1_2": {
+    "grp": "1"
+  },
+  "U_Ladenfl_che_S_d": {
+    "grp": "später",
+    "note": "früher, falls ein Mieter gefunden wird"
+  },
+  "U_WE_S_d_2": {
+    "grp": "1"
+  },
+  "LOG": {
+    "items": [
+      {
+        "d": "29.09.2026",
+        "de": "Leistungsverzeichnis, Bauablaufplan (Entwurf) und Materialpakete P1–P15 angelegt.",
+        "ro": "Create lista de lucrări, programul (draft) și pachetele de material P1–P15."
+      },
+      {
+        "d": "29.09.2026",
+        "de": "Festgelegt: NEXTEP führt alle Gewerke aus; Heizung zentral über vorhandene Fernwärme, Planung Wilhelm Jensen; Normalstandard; Teilinbetriebnahme je Treppenhaus.",
+        "ro": "Stabilit: NEXTEP execută toate meseriile; încălzire centralizată din termoficarea existentă, proiect Wilhelm Jensen; standard normal; punere în funcțiune pe casă de scară."
+      },
+      {
+        "d": "29.09.2026",
+        "de": "Erstes Angebot im Preisspiegel: Sanitärobjekte (P4).",
+        "ro": "Prima ofertă în Preisspiegel: obiecte sanitare (P4)."
+      },
+      {
+        "d": "30.09.2026",
+        "de": "Wohnungsaufteilung (17 Einheiten, 2 Läden, 1 Lager) als eigener Reiter ergänzt.",
+        "ro": "Adăugat tab-ul cu împărțirea pe apartamente (17 unități, 2 spații comerciale, 1 depozit)."
+      },
+      {
+        "d": "30.09.2026",
+        "de": "Priorität 1 für Fertigstellung/Vermietung: Wohnung EG-1, EG-2, WE.V 1.4, 1.2, 1.3, Süd-Ost, WE.V 2.7, WE Süd 1 und Süd 2. Bauablauf beginnt deshalb mit VH-Süd.",
+        "ro": "Prioritatea 1 la finalizare/închiriere: Wohnung EG-1, EG-2, WE.V 1.4, 1.2, 1.3, Süd-Ost, WE.V 2.7, WE Süd 1 și Süd 2. Programul începe de aceea cu VH-Sud."
+      },
+      {
+        "d": "30.09.2026",
+        "de": "Nächste Schritte: EG-Fußboden und Abdichtung, danach Dämmung der Außenwände und Holzständerwerk für die Innenwände. Parallel: Suhr ändert die Balken zwischen EG und 1.OG, Mahler schließt die Asbestsanierung im Dachgeschoss ab.",
+        "ro": "Pașii următori: pardoseala și hidroizolația la parter, apoi izolarea pereților exteriori și structura de lemn pentru pereții interiori. În paralel: Suhr modifică grinzile dintre parter și etajul 1, Mahler termină decontaminarea de azbest la mansardă."
+      },
+      {
+        "d": "30.09.2026",
+        "de": "Festgelegt: Außenwände innen gedämmt mit Rotkalk; EG-Holzfußboden auf Abdichtung. Zähler und Technikraum (Strom, Wasser, Heizung) macht Wilhelm Jensen, Termine direkt mit Johan; NEXTEP übernimmt die Verteilung in den Einheiten. WE.V 1.4 wird mit der Südgruppe fertig; Ladenfläche Süd später. Laufend: EG-Untergrund wird für die Abdichtung vorbereitet.",
+        "ro": "Stabilit: pereții exteriori izolați la interior cu Rotkalk; pardoseală din lemn la parter, peste hidroizolație. Contoarele și camera tehnică (curent, apă, încălzire) le face Wilhelm Jensen, cu termene direct cu Johan; NEXTEP face distribuția în unități. WE.V 1.4 se finalizează cu grupul din sud; Ladenfläche Süd mai târziu. În curs: pregătirea pardoselii de la parter pentru hidroizolație."
+      }
+    ]
+  },
+  "U_Wohnung_S_d_Ost": {
+    "grp": "1"
+  },
+  "U_WE_S_d_1": {
+    "grp": "1"
+  },
+  "O_P4": {
+    "o": [
+      {
+        "b": "167.536,40 RON netto (202.719,04 brutto), umgerechnet zum EZB-Kurs 5,2779 vom 24.09.2026. 19 Sets weiß + 1 Set schwarz matt (LV: 18 Bäder + 1 WC). Ausgestellt auf BNB INVEST SRL. Transport nach Flensburg und Lieferzeit fehlen.",
+        "f": "Romstal (RO) — Ideal Standard",
+        "g": "08.10.2026 (Verlängerung vorgesehen)",
+        "l": "",
+        "n": "31.743,00",
+        "nr": "22283690 / 24.09.2026",
+        "src": "Romstal 22283690 (Datei noch nicht im Projekt)"
+      }
+    ]
+  },
+  "U_WE_V_1_4": {
+    "grp": "1",
+    "note": "Treppenhaus 1 (Nord) — Fertigstellung mit der Südgruppe"
+  },
+  "NEXT": {
+    "items": [
+      {
+        "de": "EG: Untergrund für die Abdichtung vorbereiten",
+        "ro": "Parter: pregătirea pardoselii pentru hidroizolație",
+        "st": 1,
+        "who": "NEXTEP"
+      },
+      {
+        "de": "EG: Abdichtung gegen Bodenfeuchte",
+        "ro": "Parter: hidroizolație",
+        "st": 0,
+        "who": "NEXTEP"
+      },
+      {
+        "de": "EG: Holzfußboden",
+        "ro": "Parter: pardoseală din lemn",
+        "st": 0,
+        "who": "NEXTEP"
+      },
+      {
+        "de": "Dämmung der Außenwände (innen), System Rotkalk",
+        "ro": "Izolarea pereților exteriori la interior, sistem Rotkalk",
+        "st": 0,
+        "who": "NEXTEP"
+      },
+      {
+        "de": "Holzständerwerk für Gipskarton-Innenwände",
+        "ro": "Structură din lemn pentru pereții interiori din gips-carton",
+        "st": 0,
+        "who": "NEXTEP"
+      },
+      {
+        "de": "Parallel: Balkenänderungen zwischen EG und 1.OG",
+        "ro": "În paralel: modificări grinzi între parter și etajul 1",
+        "st": 0,
+        "who": "Suhr"
+      },
+      {
+        "de": "Parallel: Asbestsanierung Dachgeschoss abschließen",
+        "ro": "În paralel: finalizarea decontaminării de azbest la mansardă",
+        "st": 1,
+        "who": "Mahler"
+      }
+    ]
+  },
+  "U_Wohnung_EG_1": {
+    "grp": "1"
+  },
+  "U_WE_V_2_7": {
+    "grp": "1"
+  }
+}

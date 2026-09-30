@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Bauprogramm Etappe 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: planning sheet — title block on top, tabbed registers below, tables scroll inside their own frames */
+:root{
+  --paper:#f4f6f8; --sheet:#ffffff; --ink:#18222e; --muted:#5b6876; --line:#d5dce3; --soft:#e9eef3;
+  --accent:#326CAD; --vhn:#326CAD; --vhs:#7fa3cf; --mh:#32AD74; --hol:#eef0f2;
+  --ok:#2f8a57; --warn:#b7791f; --bad:#c0392b; --okbg:#e3f3ea; --warnbg:#fbf0dc; --badbg:#fbe4e1;
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11161c; --sheet:#171e26; --ink:#e4eaf0; --muted:#98a6b4; --line:#2b3642; --soft:#1f2832;
+  --accent:#6d9fd8; --vhn:#5b92d3; --vhs:#9dbbe0; --mh:#4cc08b; --hol:#1c232b;
+  --ok:#5cc58a; --warn:#e2a64a; --bad:#f07b6c; --okbg:#173022; --warnbg:#33280f; --badbg:#3a1b17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11161c; --sheet:#171e26; --ink:#e4eaf0; --muted:#98a6b4; --line:#2b3642; --soft:#1f2832;
+  --accent:#6d9fd8; --vhn:#5b92d3; --vhs:#9dbbe0; --mh:#4cc08b; --hol:#1c232b;
+  --ok:#5cc58a; --warn:#e2a64a; --bad:#f07b6c; --okbg:#173022; --warnbg:#33280f; --badbg:#3a1b17; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+header.tb{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:12px}
+header.tb h1{font-family:var(--f-display);font-weight:800;font-size:clamp(1.5rem,3.2vw,2.2rem);letter-spacing:-.01em;margin:0;text-wrap:balance;line-height:1.1}
+.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:.85rem;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:600}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+button,.btn{font:inherit;font-size:.88rem;font-weight:600;border:1px solid var(--line);background:var(--sheet);color:var(--ink);padding:6px 12px;border-radius:4px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:6px 10px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+nav.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav.tabs button{border:0;border-bottom:3px solid transparent;border-radius:0;background:none;padding:8px 14px;color:var(--muted);white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+section.panel{display:flex;flex-direction:column;gap:16px}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.25rem;margin:0}
+h3{font-family:var(--f-display);font-weight:700;font-size:1rem;margin:0}
+p{margin:0;max-width:75ch}
+.note{font-size:.88rem;color:var(--muted);max-width:90ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.box{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+ol.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px}
+ol.steps li::marker{font-family:var(--f-mono);font-weight:600;color:var(--accent)}
+.who{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.kpi{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.kpi .v{font-family:var(--f-display);font-weight:800;font-size:1.35rem;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:.8rem;color:var(--muted)}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--soft);position:sticky;top:0;white-space:nowrap}
+tr.grp td{background:var(--soft);font-family:var(--f-display);font-weight:700;font-size:.9rem}
+td.num,td.mono{font-family:var(--f-mono);font-size:.8rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.desc{min-width:260px}
+td .sub{display:block;color:var(--muted);font-size:.8rem}
+input:disabled,select:disabled{background:transparent;border-color:transparent;color:var(--ink);-webkit-text-fill-color:var(--ink);opacity:1;appearance:none;-webkit-appearance:none;cursor:default}
+input[type=radio]:disabled{appearance:auto;-webkit-appearance:auto}
+button:disabled{display:none}
+.wip{display:inline-block;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:var(--warnbg);color:var(--warn);font-weight:600}
+select,input,textarea{font:inherit;font-size:.85rem;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:3px 6px}
+input.note-in{width:100%;min-width:160px}
+input.wk{width:4.2em;font-family:var(--f-mono)}
+.chip{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:10px;white-space:nowrap;border:1px solid var(--line);background:var(--soft);color:var(--ink)}
+.chip.nx{background:var(--okbg);border-color:transparent;color:var(--ok)}
+.chip.fx{background:var(--warnbg);border-color:transparent;color:var(--warn)}
+.chip.lf{background:var(--soft)}
+.chip.dec{background:var(--badbg);border-color:transparent;color:var(--bad)}
+.late{color:var(--bad);font-weight:700}
+.soon{color:var(--warn);font-weight:700}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:14px;height:8px;border-radius:2px;margin-right:5px;vertical-align:middle}
+/* gantt */
+.gantt{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--sheet)}
+.g-row{display:flex;border-bottom:1px solid var(--line);min-width:max-content}
+.g-lab{position:sticky;left:0;z-index:2;background:var(--sheet);width:230px;flex:none;padding:6px 10px;font-size:.84rem;border-right:1px solid var(--line);line-height:1.25}
+.g-lab .sub{display:block;color:var(--muted);font-size:.74rem}
+.g-track{position:relative;flex:none;min-height:46px}
+.g-head .g-track{height:38px}
+.g-head .g-lab{background:var(--soft);font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:flex;align-items:flex-end}
+.g-col{position:absolute;top:0;bottom:0;border-left:1px solid var(--soft)}
+.g-col.hol{background:var(--hol)}
+.g-col.now{border-left:2px solid var(--bad)}
+.g-wk{position:absolute;bottom:3px;font-family:var(--f-mono);font-size:.62rem;color:var(--muted);text-align:center}
+.g-mo{position:absolute;top:3px;font-family:var(--f-mono);font-size:.64rem;color:var(--ink);font-weight:600;white-space:nowrap}
+.bar{position:absolute;height:10px;border-radius:2px}
+.bar.N{top:6px;background:var(--vhn)} .bar.S{top:18px;background:var(--vhs)} .bar.M{top:30px;background:var(--mh)}
+.gate{position:absolute;top:2px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid var(--bad)}
+details.box summary{cursor:pointer;font-weight:600}
+.tpl{white-space:pre-wrap;font-family:var(--f-body);font-size:.9rem;background:var(--soft);border-radius:4px;padding:12px;border:1px solid var(--line);max-height:460px;overflow:auto}
+.status{font-size:.8rem;color:var(--muted)}
+ul.q{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+@media (max-width:640px){header.tb{grid-template-columns:1fr}.ctrl{justify-content:flex-start}.g-lab{width:150px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="tb">
+    <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+      <span class="eyebrow">Catharina-Nacke-Hof · Große Straße 48 · Flensburg</span>
+      <h1 id="h1"></h1>
+      <div class="meta" id="meta"></div>
+    </div>
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="Sprache / Limba">
+        <button id="l-de" aria-pressed="true">DE</button><button id="l-ro" aria-pressed="false">RO</button>
+      </div>
+      <button id="xls" class="primary" hidden>Excel</button>
+    </div>
+  </header>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <div id="sync" class="status"></div>
+  <main id="main"></main>
+</div>
+
+<script>
+(function(){
+/* ---------- calendar ---------- */
+const BASE = new Date(2026,8,28); // Mo 28.09.2026 = KW40
+const HOL = [12,13];              // Betriebsruhe 21.12.2026–03.01.2027 (Kalenderwochen-Index)
+const NCAL = 40;
+function calOf(ww){ let c=0,n=-1; while(true){ if(!HOL.includes(c)){n++; if(n===ww) return c;} c++; } }
+function segs(s,d){ const out=[]; for(let i=0;i<d;i++){ const c=calOf(s+i); const last=out[out.length-1]; if(last && last[1]===c) last[1]=c+1; else out.push([c,c+1]); } return out; }
+function monday(c){ const x=new Date(BASE); x.setDate(x.getDate()+7*c); return x; }
+function isoWk(dt){ const d=new Date(Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate())); const day=d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-day); const y=new Date(Date.UTC(d.getUTCFullYear(),0,1)); return Math.ceil(((d-y)/864e5+1)/7); }
+function fmt(dt){ return String(dt.getDate()).padStart(2,'0')+'.'+String(dt.getMonth()+1).padStart(2,'0')+'.'+dt.getFullYear(); }
+function calFromWw(ww){ return ww>=0?calOf(ww):ww; }
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+/* ---------- i18n ---------- */
+let L='de'; try{ L=localStorage.getItem('bp_lang')||'de'; }catch(e){}
+const T={
+ h1:{de:'Bauprogramm Etappe 2 — Vorderhaus + Mittelhaus',ro:'Program lucrări Etapa 2 — Vorderhaus + Mittelhaus'},
+ meta:{de:['Bauherr','Meesenburg Grundstücks KG','Ausführung','NEXTEPCONCEPT UG','Bauleitung','Reiner','Stand','30.09.2026'],
+       ro:['Beneficiar','Meesenburg Grundstücks KG','Execuție','NEXTEPCONCEPT UG','Șef șantier','Reiner','Stadiu','30.09.2026']},
+ tabs:{de:['Übersicht','Wohnungen','Leistungsverzeichnis','Anfrageliste','Preisspiegel','Anfrage-Vorlage'],ro:['Prezentare','Apartamente','Listă lucrări','Cereri de ofertă','Comparație oferte','Șablon cerere']},
+ draft:{de:'Arbeitsstand, wird laufend ergänzt. Lieferzeiten sind Annahmen. Mengen aus dem Wohnungsspiegel 25-0046 (Zeichnungswerte Fn, kein Aufmaß).',
+        ro:'Stadiu de lucru, completat pe parcurs. Termenele de livrare sunt presupuneri. Cantități din Wohnungsspiegel 25-0046 (valori Fn din desen, nu măsurători).'},
+ roles:{de:'Rollen',ro:'Roluri'},
+ rolesTxt:{de:['<b>Johan / Martin</b> — entscheiden was, welcher Standard, welches Budget; wählen aus den vorgelegten Angeboten.','<b>Reiner</b> — Bauleitung, Freigabe Reihenfolge.','<b>Tudor / NEXTEPCONCEPT</b> — Ausführung (~95 %); Leistungsverzeichnis, Ablauf, holt die Angebote ein und legt sie mit Preisspiegel und Empfehlung vor.','<b>Fachfirmen / Planer</b> — Suhr: Balkenänderungen zwischen EG und 1.OG; Mahler: Asbestsanierung Dachgeschoss; Wilhelm Jensen: Zähler und Technikraum (Strom, Wasser, Heizung), Termine direkt mit Johan.'],
+           ro:['<b>Johan / Martin</b> — decid ce, ce standard, ce buget; aleg dintre ofertele prezentate.','<b>Reiner</b> — conducerea șantierului, aprobă ordinea.','<b>Tudor / NEXTEPCONCEPT</b> — execuție (~95 %); lista de lucrări, programul, cere ofertele și le prezintă cu comparație și recomandare.','<b>Firme de specialitate / proiectanți</b> — Suhr: modificări grinzi între parter și etajul 1; Mahler: decontaminare azbest la mansardă; Wilhelm Jensen: contoare și camera tehnică (curent, apă, încălzire), termene direct cu Johan.']},
+ steps:{de:'Ablauf in 7 Schritten',ro:'Pașii, în ordine'},
+ stepsList:{de:[
+   ['Leistungsumfang je Position festlegen (was wird gemacht, welcher Standard)','Johan/Martin + Tudor'],
+   ['Mengen aus Wohnungsspiegel, später Aufmaß vor Ort','Tudor'],
+   ['Materialpakete bilden — NEXTEP führt die Gewerke aus (Ausnahmen unter Rollen), angefragt wird Material und Lieferung','Tudor + Reiner'],
+   ['Dauern und Reihenfolge → Bauablaufplan (Entwurf)','Tudor + Reiner'],
+   ['Angebote einholen (mind. 3 je Paket), Preisspiegel mit Empfehlung vorlegen','Tudor'],
+   ['Freigabe durch Johan, wo Tudor sie anfragt (Status „zur Freigabe bei Johan“)','Johan/Martin'],
+   ['Wöchentlich Status und Termine aktualisieren (direkt in dieser Seite)','alle']],
+  ro:[
+   ['Stabilirea conținutului fiecărei poziții (ce se face, ce standard)','Johan/Martin + Tudor'],
+   ['Cantități din Wohnungsspiegel, apoi măsurători la fața locului','Tudor'],
+   ['Formarea pachetelor de material — NEXTEP execută meseriile (excepții la Roluri), se cere oferta pentru material și livrare','Tudor + Reiner'],
+   ['Durate și ordine → program (draft)','Tudor + Reiner'],
+   ['Cererea ofertelor (min. 3 pe pachet), comparație cu recomandare','Tudor'],
+   ['Aprobare de la Johan acolo unde Tudor o cere (status „la Johan pentru aprobare”)','Johan/Martin'],
+   ['Actualizare săptămânală a statusului și termenelor (direct în această pagină)','toți']]},
+ kUnits:{de:'Wohneinheiten (15 gezeichnet + 2 MH ohne Plan)',ro:'Locuințe (15 desenate + 2 MH fără plan)'},
+ kFn:{de:'m² Fn bekannt · 5 Einheiten ohne Maß',ro:'m² Fn cunoscut · 5 unități fără cote'},
+ kReq:{de:'Pakete angefragt',ro:'Pachete cerute'}, kOff:{de:'Pakete mit Angeboten',ro:'Pachete cu oferte'}, kApp:{de:'zur Freigabe bei Johan',ro:'la Johan pentru aprobare'},
+ next:{de:'Aktuell und nächste Schritte',ro:'Acum și pașii următori'}, nst:{de:['geplant','läuft','fertig'],ro:['planificat','în curs','gata']},
+ log:{de:'Letzte Änderungen',ro:'Ultimele modificări'}, logEmpty:{de:'Noch keine Einträge.',ro:'Încă nicio intrare.'}, appNone:{de:'Derzeit nichts zur Freigabe.',ro:'Momentan nimic de aprobat.'},
+ urgent:{de:'Zur Freigabe bei Johan',ro:'La Johan pentru aprobare'},
+ openQ:{de:'Offene Fragen',ro:'Întrebări deschise'},
+ openQList:{de:[
+   'Lage der Übergabepunkte (Zähler/Technikraum) je Treppenhaus — Grundlage für die Verteilung in den Einheiten (WJ).',
+   'Mittelhaus: Plan für die 2 neuen Wohnungen kommt (Gloyer).',
+   'Dauern und Kolonnen je Gewerk: werden bei der Ablaufplanung besprochen (Tudor + Reiner).',
+   'Brand- und Schallschutzanforderungen (Wohnungstrennwände, Decken, Eingangstüren): hmp.',
+   'Umgang mit Materialschwellen (1.000 € / 5.000 €): wird nach dem Bauablaufplan festgelegt.'],
+  ro:[
+   'Poziția punctelor de predare (contoare/camera tehnică) pe fiecare casă de scară — baza pentru distribuția în unități (WJ).',
+   'Mittelhaus: planul pentru cele 2 locuințe noi vine (Gloyer).',
+   'Durate și echipe pe meserie: se discută la planificare (Tudor + Reiner).',
+   'Cerințe PSI și fonice (pereți între apartamente, planșee, uși de intrare): hmp.',
+   'Pragurile de material (1.000 € / 5.000 €): se stabilesc după program.']},
+ assum:{de:'Annahmen im Entwurf',ro:'Presupuneri în draft'},
+ assumList:{de:['Reihenfolge nach Vermietungspriorität: zuerst die Südgruppe (inkl. WE.V 1.4), danach VH-Nord und Mittelhaus. Bauablaufplan mit Terminen folgt.','Estrich/Böden: ca. 4 Wochen Trocknung vor Fliesen/Boden, wo nass eingebaut wird.','Betonarbeiten (Balkenköpfe) nur ab +5 °C.','NEXTEP führt die Gewerke aus; Ausnahmen: Suhr (Balken EG/1.OG), Mahler (Asbest DG), Wilhelm Jensen (Zähler und Technikraum für Strom, Wasser, Heizung).','Ab Zähler/Technikraum übernimmt NEXTEP die Verteilung in den Einheiten auf Basis der WJ-Vorplanung. Termine für Zähler und Technikraum stimmt WJ direkt mit Johan ab.','EG: Holzfußboden mit Abdichtung darunter. Außenwände innen gedämmt mit Rotkalk.','Ausstattung: Normalstandard — solide, wirtschaftlich vertretbares Mindestniveau, kein gehobener Standard.','Renovierung im Bestand: Strom, Wasser und Fernwärme liegen in jedem Treppenhaus an — keine neuen Hausanschlüsse.'],
+   ro:['Ordine după prioritatea de închiriere: întâi grupul din sud (inclusiv WE.V 1.4), apoi VH-Nord și Mittelhaus. Programul cu date urmează.','Șapă/pardoseli: cca. 4 săptămâni uscare înainte de faianță/pardoseli, unde se toarnă umed.','Betonare (capete grinzi) doar peste +5 °C.','NEXTEP execută meseriile; excepții: Suhr (grinzi parter/et. 1), Mahler (azbest mansardă), Wilhelm Jensen (contoare și camera tehnică pentru curent, apă, încălzire).','De la contoare/camera tehnică, NEXTEP face distribuția în unități pe baza proiectului preliminar WJ. Termenele pentru contoare și camera tehnică le stabilește WJ direct cu Johan.','Parter: pardoseală din lemn cu hidroizolație dedesubt. Pereții exteriori izolați la interior cu Rotkalk.','Dotare: standard normal — nivel minim corect ca investiție, nu standard ridicat.','Renovare: curent, apă și termoficare există deja în fiecare casă de scară — fără racorduri noi.']},
+ cols:{de:['Pos.','Beschreibung','Menge','Zone','Ausführung','Paket','Entsch.','Status','Notiz'],ro:['Poz.','Descriere','Cantitate','Zonă','Execuție','Pachet','Decizie','Status','Notă']},
+ exec:{NX:{de:'NEXTEP',ro:'NEXTEP'},FX:{de:'Fachfirma',ro:'Firmă spec.'},LF:{de:'Lieferung',ro:'Livrare'},MIX:{de:'NEXTEP + Fachfirma',ro:'NEXTEP + firmă spec.'},KB:{de:'Kubasch',ro:'Kubasch'}},
+ decY:{de:'Bauherr',ro:'Beneficiar'},
+ st:{de:['offen','geklärt','in Arbeit','fertig'],ro:['deschis','clarificat','în lucru','gata']},
+ pst:{de:['nicht angefragt','angefragt','Angebote da','zur Freigabe bei Johan','freigegeben','bestellt'],ro:['necerut','cerut','oferte primite','la Johan pentru aprobare','aprobat','comandat']},
+ all:{de:'alle',ro:'toate'},
+ fGew:{de:'Gewerk',ro:'Meserie'}, fEx:{de:'Ausführung',ro:'Execuție'},
+ zones:{N:{de:'VH-Nord (TRH 1)',ro:'VH-Nord (TRH 1)'},S:{de:'VH-Süd (TRH 2)',ro:'VH-Sud (TRH 2)'},M:{de:'Mittelhaus (TRH 4)',ro:'Mittelhaus (TRH 4)'}},
+ hol:{de:'Betriebsruhe',ro:'Pauză'}, now:{de:'heute',ro:'azi'}, gateL:{de:'',ro:''},
+ edit:{de:'Dauern bearbeiten (Wochen, Start = Arbeitswoche ab KW 40)',ro:'Editare durate (săptămâni, start = săpt. de lucru de la KW 40)'},
+ editCols:{de:['Vorgang','Zone','Start','Dauer','von','bis'],ro:['Activitate','Zonă','Start','Durată','de la','până la']},
+ reset:{de:'Zurücksetzen',ro:'Resetare'},
+ pcols:{de:['Paket','Leistung / Lieferung','LV-Pos.','Lieferzeit (Annahme)','Status','Notiz'],ro:['Pachet','Lucrare / livrare','Poz. LV','Livrare (presupusă)','Status','Notă']},
+ wk:{de:'Wo.',ro:'săpt.'},
+ pnote:{de:'NEXTEP holt die Angebote ein und trägt sie im Preisspiegel ein. Wo eine Freigabe nötig ist, steht das Paket auf „zur Freigabe bei Johan“. Fenster/Außentüren (Kubasch) gehören nicht zu diesen Paketen.',
+   ro:'NEXTEP cere ofertele și le trece în Preisspiegel. Unde e nevoie de aprobare, pachetul stă pe „la Johan pentru aprobare”. Ferestrele/ușile exterioare (Kubasch) nu fac parte din aceste pachete.'},
+ cmpCols:{de:['Anbieter','Angebot Nr. / Datum','Gültig bis','Netto €','Lieferzeit','Abweichungen / Bemerkung','Quelle','Empfehlung Tudor','Auswahl Johan'],ro:['Furnizor','Ofertă nr. / dată','Valabilă până la','Net €','Livrare','Abateri / observații','Sursă','Recomandare Tudor','Alegere Johan']},
+ cmpNote:{de:'Mindestens drei Angebote je Paket. NEXTEP trägt die Angebote ein (netto in €, Fremdwährung umgerechnet, Original in der Bemerkung) und markiert eine Empfehlung; Johan markiert seine Auswahl. Das günstigste Angebot ist hervorgehoben — vergleichbar nur bei gleichem Umfang, siehe Abweichungen.',ro:'Minimum trei oferte pe pachet. NEXTEP introduce ofertele (net în €, valuta convertită, originalul la observații) și marchează recomandarea; Johan marchează alegerea. Oferta cea mai ieftină e evidențiată — comparabilă doar la același conținut, vezi abaterile.'},
+ cheap:{de:'günstigstes',ro:'cea mai ieftină'}, diff:{de:'Differenz zum günstigsten',ro:'Diferență față de cea mai ieftină'},
+ uCols:{de:['Einheit','Geschoss','Räume (Fn m², Zeichnung)','Fn m²','Hinweis','Priorität Vermietung','Notiz'],ro:['Unitate','Etaj','Camere (Fn m², desen)','Fn m²','Observație','Prioritate închiriere','Notă']},
+ uNote:{de:'Aufteilung wie in den farbigen Grundrissen, bestätigt am 12.09.2026. Flächen sind Zeichnungswerte (Wilhelm Jensen 25-0046), kein Aufmaß und keine Wohnfläche nach WoFlV — Mietflächen werden nach Stellen der neuen Wände gemessen. Keller: Gemeinschaftsfläche, keine Abtrennung.',ro:'Împărțirea conform planurilor colorate, confirmată la 12.09.2026. Suprafețele sunt valori din desen (Wilhelm Jensen 25-0046), nu măsurători și nu suprafață locuibilă WoFlV — suprafețele de închiriat se măsoară după ridicarea pereților noi. Subsol: spațiu comun, fără compartimentare.'},
+ uSum:{de:'Summe',ro:'Total'},
+ tplPick:{de:'Paket wählen',ro:'Alege pachetul'},
+ tplLang:{de:'Vorlage ist auf Deutsch (für Lieferanten). Rumänische Übersetzung darunter.',ro:'Șablonul e în germană (pentru furnizori). Traducerea în română dedesubt.'},
+ copy:{de:'Text kopieren',ro:'Copiază textul'}, copied:{de:'Kopiert',ro:'Copiat'},
+ syncOn:{de:'Änderungen werden gespeichert und für alle sichtbar.',ro:'Modificările se salvează și sunt vizibile pentru toți.'},
+ syncOff:{de:'Nur Ansicht. Die Seite wird von NEXTEPCONCEPT laufend aktualisiert.',ro:'Doar vizualizare. Pagina este actualizată pe parcurs de NEXTEPCONCEPT.'}, wip:{de:'In Bearbeitung',ro:'În lucru'},
+ xlsFail:{de:'Excel-Export wurde nicht gespeichert.',ro:'Exportul Excel nu a fost salvat.'}
+};
+const t=k=>T[k][L];
+
+/* ---------- data: Leistungsverzeichnis ---------- */
+const GEW=[
+ ['01',{de:'Baustelle, Abbruch, Schadstoffe',ro:'Șantier, demolări, substanțe nocive'}],
+ ['02',{de:'Statik und Rohbau',ro:'Structură și zidărie'}],
+ ['03',{de:'Fenster und Außentüren',ro:'Ferestre și uși exterioare'}],
+ ['04',{de:'Trockenbau und Dämmung',ro:'Rigips și izolații'}],
+ ['05',{de:'Elektro',ro:'Instalații electrice'}],
+ ['06',{de:'Sanitär',ro:'Instalații sanitare'}],
+ ['07',{de:'Heizung',ro:'Încălzire'}],
+ ['08',{de:'Lüftung',ro:'Ventilație'}],
+ ['09',{de:'Estrich',ro:'Șapă'}],
+ ['10',{de:'Putz und Spachtel',ro:'Tencuieli și gleturi'}],
+ ['11',{de:'Abdichtung und Fliesen',ro:'Hidroizolații și faianță/gresie'}],
+ ['12',{de:'Maler',ro:'Zugrăveli'}],
+ ['13',{de:'Bodenbeläge',ro:'Pardoseli'}],
+ ['14',{de:'Türen',ro:'Uși'}],
+ ['15',{de:'Küchen',ro:'Bucătării'}],
+ ['16',{de:'Treppenhäuser und Allgemeinflächen',ro:'Case de scară și spații comune'}],
+ ['17',{de:'Abschluss',ro:'Finalizare'}]
+];
+// [pos, gew, de, ro, qtyDe, qtyRo, zone, exec, pkg, decision]
+const LV=[
+ ['01.01','01','Baustelleneinrichtung, Container, Entsorgung Bauschutt','Organizare de șantier, containere, evacuare moloz','pauschal','global','alle','NX','P13',0],
+ ['01.02','01','Asbestsanierung Dachgeschoss nach TRGS 519 — Firma Mahler (läuft)','Decontaminare azbest mansardă conform TRGS 519 — firma Mahler (în curs)','nach Befund','după constatare','DG','FX','',0],
+ ['01.03','01','Restliche Entkernung, Rückbau Bestandsinstallationen','Dezafectare rămasă, demontare instalații existente','nach Aufmaß','după măsurători','alle','NX','',0],
+ ['02.01','02','Balkenkopfsanierung mit Betonauflagern nach hmp (läuft)','Consolidare capete grinzi cu perne de beton conform hmp (în curs)','21 Stk','21 buc','VH','NX','',0],
+ ['02.02','02','Balkenänderungen zwischen EG und 1.OG — Firma Suhr','Modificări grinzi între parter și etajul 1 — firma Suhr','nach Statik','după statică','VH','FX','',0],
+ ['02.05','02','Wandverstärkungen und Kellerwände nach Statik hmp','Consolidări pereți și pereți subsol conform statică hmp','nach Statik','după statică','VH+MH','NX','',1],
+ ['02.06','02','EG: Holzfußboden','Parter: pardoseală din lemn','EG-Flächen nach Aufmaß','suprafețe parter după măsurători','EG','NX','P16',0],
+ ['02.07','02','EG: Abdichtung gegen Bodenfeuchte','Parter: hidroizolație împotriva umidității din sol','EG-Flächen nach Aufmaß','suprafețe parter după măsurători','EG','NX','P16',1],
+ ['02.03','02','Neue Innenwände, Durchbrüche nach Wohnungsaufteilung','Pereți interiori noi, străpungeri conform împărțirii','nach Plan','după plan','alle','NX','P9',0],
+ ['03.01','03','Fenster und Außentüren — Lieferung Kubasch (außerhalb Rahmenanfrage)','Ferestre și uși exterioare — livrare Kubasch (în afara cererii-cadru)','nach Liste Kubasch','după lista Kubasch','alle','KB','',1],
+ ['03.02','03','Montage Fenster und Außentüren','Montaj ferestre și uși exterioare','nach Liste Kubasch','după lista Kubasch','alle','NX','',0],
+ ['04.01','04','Holzständerwerk für Gipskarton-Innenwände, Wohnungstrennwände mit Schall-/Brandschutz','Structură din lemn pentru pereți interiori din gips-carton, pereți între apartamente cu protecție fonică/PSI','m² nach Plan','m² după plan','alle','NX','P9',1],
+ ['04.02','04','Vorsatzschalen Bad/WC','Pereți de instalații baie/WC','19 Stk (18 Bäder + 1 WC)','19 buc (18 băi + 1 WC)','alle','NX','P9',0],
+ ['04.03','04','Deckenbekleidung, Brandschutz nach Konzept','Placare tavane, PSI conform concept','ca. 877 m² + Aufmaß','cca. 877 m² + măsurători','alle','NX','P9',1],
+ ['04.04','04','Trittschalldämmung','Izolație fonică la pași','nach Aufmaß','după măsurători','alle','NX','P9',0],
+ ['04.05','04','Dämmung der Außenwände (innen), System Rotkalk','Izolarea pereților exteriori (la interior), sistem Rotkalk','nach Aufmaß','după măsurători','alle','NX','P9',0],
+ ['05.01','05','Stromzähler und Technikraum — Wilhelm Jensen; Termine stimmt WJ direkt mit Johan ab','Contoare curent și camera tehnică — Wilhelm Jensen; termenele le stabilește WJ direct cu Johan','pauschal','global','alle','FX','',0],
+ ['05.02','05','Unterverteilung je Einheit','Tablou de distribuție pe unitate','19 Stk (17 WE + 2 Läden)','19 buc (17 ap. + 2 spații com.)','alle','NX','P1',0],
+ ['05.03','05','Rohinstallation Leitungen und Dosen','Instalație brută cabluri și doze','17 WE + 2 Läden','17 ap. + 2 spații com.','alle','NX','P1',0],
+ ['05.04','05','Schalterprogramm, Steckdosen, Leuchten — Endmontage','Program întrerupătoare, prize, corpuri — montaj final','nach Standard','după standard','alle','NX','P1',1],
+ ['05.05','05','Klingel-/Sprechanlage, Briefkastenanlage','Interfon, cutii poștale','19 Einheiten','19 unități','alle','NX','P15',1],
+ ['05.06','05','Rauchwarnmelder nach LBO SH','Detectoare de fum conform LBO SH','nach Räumen','după camere','alle','NX','P15',0],
+ ['06.01','06','Trink-/Abwasserverteilung ab Zähler/Technikraum (WJ)','Distribuție apă/canal de la contoare/camera tehnică (WJ)','pauschal','global','alle','NX','P3',0],
+ ['06.02','06','Rohinstallation Bad und Küche','Instalație brută baie și bucătărie','18 Bäder + 17 Küchen','18 băi + 17 bucătării','alle','NX','P3',0],
+ ['06.03','06','Sanitärobjekte und Armaturen — Lieferung','Obiecte sanitare și baterii — livrare','18 Sets + 1 WC Laden','18 seturi + 1 WC spațiu com.','alle','LF','P4',1],
+ ['06.04','06','Endmontage Sanitärobjekte','Montaj final obiecte sanitare','18 Bäder + 1 WC','18 băi + 1 WC','alle','NX','',0],
+ ['07.01','07','Wärmezähler und Technikraum Heizung — Wilhelm Jensen; Termine stimmt WJ direkt mit Johan ab','Contoare de căldură și camera tehnică încălzire — Wilhelm Jensen; termenele le stabilește WJ direct cu Johan','pauschal','global','alle','FX','',0],
+ ['07.02','07','Heizungsverteilung in den Einheiten ab Technikraum/Zähler, Heizkörper (Vorplanung WJ)','Distribuția încălzirii în unități de la camera tehnică/contoare, radiatoare (proiect preliminar WJ)','19 Einheiten','19 unități','alle','NX','P2',0],
+ ['08.01','08','Abluft innenliegende Bäder (DIN 18017-3)','Ventilație băi interioare (DIN 18017-3)','nach Plan','după plan','alle','NX','P14',0],
+ ['09.01','09','Estrich inkl. Trittschalldämmung, Aufbauhöhe Altbau klären','Șapă cu izolație fonică, clarificare grosime în clădire veche','ca. 877 m² + Aufmaß','cca. 877 m² + măsurători','alle','NX','P11',1],
+ ['10.01','10','Innenputz / Spachtelung Q2–Q3','Tencuieli / gleturi Q2–Q3','nach Aufmaß','după măsurători','alle','NX','P10',0],
+ ['11.01','11','Abdichtung Nassbereiche nach DIN 18534','Hidroizolație zone umede conform DIN 18534','18 Bäder + 1 WC','18 băi + 1 WC','alle','NX','P5',0],
+ ['11.02','11','Wand- und Bodenfliesen Bäder (Format, Fliesenhöhe)','Faianță și gresie băi (format, înălțime)','18 Bäder + 1 WC','18 băi + 1 WC','alle','NX','P5',1],
+ ['12.01','12','Anstrich Wände und Decken','Vopsitorii pereți și tavane','nach Aufmaß','după măsurători','alle','NX','P10',0],
+ ['13.01','13','Bodenbelag Wohn- und Gewerbeflächen (Vinyl/Parkett)','Pardoseală spații locuit și comerciale (vinil/parchet)','ca. 877 m² − Nassräume','cca. 877 m² − zone umede','alle','NX','P6',1],
+ ['14.01','14','Wohnungseingangstüren (Anforderung nach Brandschutzkonzept)','Uși de intrare apartamente (cerințe conform concept PSI)','17 Stk + 2 Läden','17 buc + 2 spații com.','alle','LF','P7',1],
+ ['14.02','14','Innentüren mit Zarge und Beschlag','Uși interioare cu toc și feronerie','nach Plan','după plan','alle','LF','P7',1],
+ ['14.03','14','Montage Türen','Montaj uși','alle Türen','toate ușile','alle','NX','',0],
+ ['15.01','15','Küchen — Lieferung und Montage','Bucătării — livrare și montaj','17 Stk','17 buc','alle','LF','P8',1],
+ ['16.01','16','Treppenhäuser TRH 1, 2, 4 (Putz, Anstrich, Beläge, Licht)','Case de scară TRH 1, 2, 4 (tencuieli, vopsitorii, pardoseli, iluminat)','3 Stk','3 buc','alle','NX','P10',0],
+ ['16.02','16','Keller als Gemeinschaftsfläche, keine Abtrennung','Subsol ca spațiu comun, fără compartimentare','pauschal','global','KG','NX','',0],
+ ['16.03','16','Schließanlage','Sistem de închidere (chei master)','1 Anlage','1 sistem','alle','LF','P15',1],
+ ['17.01','17','Endreinigung, Aufmaß Mietflächen, Übergabe','Curățenie finală, măsurare suprafețe închiriabile, predare','19 Einheiten','19 unități','alle','NX','',0]
+];
+
+/* ---------- data: Wohnungen (Wohnungsspiegel 25-0046, Stand 18.09.2025; Aufteilung bestätigt 12.09.2026) ---------- */
+// [Einheit, Zone, Geschoss, Räume, Fn m² oder null, Hinweis]
+const UNITS=[
+ ['Ladenfläche Nord','N','EG','Ladenfläche (Ladenfläche 2)',156.93,{de:'Gloyer MSH22107: 161,74 m²',ro:'Gloyer MSH22107: 161,74 m²'}],
+ ['WE.V 1.5','N','1.OG','Zimmer 20,65 · Zimmer 18,27 · Bad 4,82 · Küche 10,61 · Abst. 1,70 · Flur 3,71',59.76,{de:'',ro:''}],
+ ['WE.V 1.6','N','1.OG','Küche/Essen/Wohnen 33,88 · Flur 12,18 · Zimmer 16,85 · Bad 5,60 · Abst. 1,87',70.38,{de:'',ro:''}],
+ ['WE.V 1.4','N','1.OG','Flur 5,37 · Zimmer 19,26 · Küche 15,09 · Bad 3,64 · Zimmer 13,29',56.65,{de:'',ro:''}],
+ ['WE.V 2.10+2.11+2.12','N','2.OG','Zimmer 21,66 · Flur 3,39 · Küche/Essen 11,35 · Zimmer 19,46 · Bad 2,95 · Flur 10,48 · Zimmer 37,27 · Zimmer 22,96 · Bad 3,37 · Zimmer 10,60 · Abst. 1,92',145.41,{de:'Eine Wohnung, 2 Bäder. Gloyer: 142,13 m²',ro:'Un singur apartament, 2 băi. Gloyer: 142,13 m²'}],
+ ['WE.V 2.9','N','2.OG','Flur 1,72 · Bad 3,12 · Essen 10,03 · Küche 1,93 · Zimmer 11,91',28.71,{de:'Zugang über gemeinsamen Flur 7,22 m²',ro:'Acces prin holul comun de 7,22 m²'}],
+ ['Ladenfläche Süd','S','EG','Ladenfläche 1 · Lager 12,18 · Abst. 1,31 · WC 1,31',62.90,{de:'Gloyer: 62,43 m²',ro:'Gloyer: 62,43 m²'}],
+ ['Wohnung EG-1','S','EG','Bestand (Südflügel)',null,{de:'Fläche nach Aufmaß',ro:'Suprafață după măsurători'}],
+ ['Wohnung EG-2','S','EG','Bestand (Südflügel)',null,{de:'Fläche nach Aufmaß',ro:'Suprafață după măsurători'}],
+ ['WE.V 1.2','S','1.OG','Wohnen/Küche/Essen 25,87 · Abst. 1,17 · Flur 4,74 · Zimmer 11,62 · Bad 5,44',48.84,{de:'',ro:''}],
+ ['WE.V 1.3','S','1.OG','Flur 4,05 · Bad 9,18 · Küche 8,23 · Flur 5,57 · Wohnen 29,26 · Zimmer 16,00',72.29,{de:'Gloyer: + Ankleide 4,21 → 76,48 m²',ro:'Gloyer: + dressing 4,21 → 76,48 m²'}],
+ ['Wohnung Süd-Ost','S','1.OG','Wohnen · Küche · Bad (Bestand)',null,{de:'Fläche nach Aufmaß',ro:'Suprafață după măsurători'}],
+ ['WE.V 2.7','S','2.OG','Flur 7,55 · Bad 3,93 · Küche 4,44 · Zimmer 15,22 · Zimmer 28,82 · Zimmer 23,81',83.77,{de:'',ro:''}],
+ ['WE Süd 1','S','2.OG','Bad · Wohnen/Kochen · Schlafen',null,{de:'Fläche nach Aufmaß',ro:'Suprafață după măsurători'}],
+ ['WE Süd 2','S','2.OG','Bad · Wohnen/Kochen · Schlafen · Zimmer 20,16',null,{de:'Nur Zimmer 20,16 m² bemaßt',ro:'Doar camera de 20,16 m² are cotă'}],
+ ['Lager Mittelhaus','M','EG','Lager',14.96,{de:'',ro:''}],
+ ['WE.M 1.1','M','1.OG','Küche/Essen/Wohnen 20,38 · Zimmer 12,21 · Zimmer 7,07 · Bad 5,24',44.90,{de:'',ro:''}],
+ ['WE.M 2.2','M','2.OG','Küche/Essen/Schlafen 22,89 · Bad 5,17 · Flur 3,02',31.08,{de:'',ro:''}],
+ ['WE.M neu 1','M','—','—',null,{de:'Plan Architekt ausstehend',ro:'Plan arhitect în așteptare'}],
+ ['WE.M neu 2','M','—','—',null,{de:'Plan Architekt ausstehend',ro:'Plan arhitect în așteptare'}]
+];
+
+/* ---------- data: schedule (Arbeitswochen ab KW 40) ---------- */
+const TASKS=[
+ ['T00',{de:'EG: Fußbodenaufbau, Abdichtung',ro:'Parter: pardoseală, hidroizolație'},{N:[2,2],S:[0,2],M:[10,1]},'02'],
+ ['T01',{de:'Entkernung, Rückbau Rest',ro:'Dezafectare rămasă'},{N:[1,2],S:[0,2],M:[10,2]},'01'],
+ ['T02',{de:'Statik: Balkenköpfe, Balken EG/1.OG (Suhr), Wände',ro:'Structură: capete grinzi, grinzi parter/et. 1 (Suhr), pereți'},{N:[3,5],S:[0,5],M:[12,3]},'02'],
+ ['T03',{de:'Dämmung Außenwände, Holzständerwerk Innenwände',ro:'Izolare pereți exteriori, structură lemn pereți interiori'},{N:[8,3],S:[2,4],M:[15,3]},'04'],
+ ['T04',{de:'Fenstermontage (Kubasch)',ro:'Montaj ferestre (Kubasch)'},{N:[10,2],S:[7,2],M:[17,1]},'03'],
+ ['T05',{de:'Rohinstallation Elektro',ro:'Instalație brută electrică'},{N:[11,4],S:[8,4],M:[18,3]},'05'],
+ ['T06',{de:'Rohinstallation Sanitär, Heizung, Lüftung',ro:'Instalație brută sanitare, încălzire, ventilație'},{N:[11,4],S:[8,4],M:[18,3]},'06'],
+ ['T07',{de:'Estrich (danach ca. 4 Wo. Trocknung)',ro:'Șapă (apoi cca. 4 săpt. uscare)'},{N:[15,1],S:[12,1],M:[21,1]},'09'],
+ ['T08',{de:'Trockenbau: Beplankung, Decken',ro:'Rigips: placare, tavane'},{N:[15,4],S:[12,4],M:[21,3]},'04'],
+ ['T09',{de:'Putz, Spachtel',ro:'Tencuieli, gleturi'},{N:[18,3],S:[15,3],M:[23,2]},'10'],
+ ['T10',{de:'Abdichtung, Fliesen',ro:'Hidroizolații, faianță'},{N:[20,3],S:[17,3],M:[25,2]},'11'],
+ ['T11',{de:'Maler',ro:'Zugrăveli'},{N:[22,3],S:[19,3],M:[26,2]},'12'],
+ ['T12',{de:'Bodenbeläge',ro:'Pardoseli'},{N:[24,2],S:[21,2],M:[28,1]},'13'],
+ ['T13',{de:'Türen',ro:'Uși'},{N:[25,2],S:[22,2],M:[28,1]},'14'],
+ ['T14',{de:'Endmontage Elektro, Sanitär, Heizung, Küchen',ro:'Montaj final electrice, sanitare, încălzire, bucătării'},{N:[26,3],S:[23,3],M:[29,2]},'15'],
+ ['T15',{de:'Treppenhäuser, Allgemeinflächen',ro:'Case de scară, spații comune'},{N:[28,2],S:[25,2],M:[31,1]},'16'],
+ ['T16',{de:'Endreinigung, Aufmaß, Übergabe',ro:'Curățenie, măsurători, predare'},{N:[29,1],S:[26,1],M:[32,1]},'17']
+];
+
+/* ---------- data: Anfragepakete ---------- */
+// [id, de, ro, type, positions, task, leadWeeks]
+const PK=[
+ ['P16',{de:'EG: Holzfußboden und Abdichtung (Material)',ro:'Parter: pardoseală din lemn și hidroizolație (material)'},'LF','02.06, 02.07','T00',1],
+ ['P13',{de:'Container und Entsorgung',ro:'Containere și evacuare'},'LF','01.01','T01',1],
+ ['P2',{de:'Heizung: Verteilung in den Einheiten, Heizkörper (Material)',ro:'Încălzire: distribuție în unități, radiatoare (material)'},'LF','07.02','T06',3],
+ ['P1',{de:'Elektro: Unterverteilungen, Leitungen, Schalter (Material)',ro:'Electrice: tablouri, cabluri, întrerupătoare (material)'},'LF','05.02–05.04','T05',3],
+ ['P3',{de:'Sanitär: Stränge, Rohinstallation (Material)',ro:'Sanitare: coloane, instalație brută (material)'},'LF','06.01, 06.02','T06',2],
+ ['P14',{de:'Lüftung Bäder',ro:'Ventilație băi'},'LF','08.01','T06',3],
+ ['P9',{de:'Holzständerwerk, Gipskarton, Rotkalk-Dämmsystem (Rahmen)',ro:'Structură lemn, gips-carton, sistem de izolație Rotkalk (cadru)'},'LF','02.03, 04.01–04.05','T03',1],
+ ['P11',{de:'Estrich (Material)',ro:'Șapă (material)'},'LF','09.01','T07',2],
+ ['P10',{de:'Putz, Spachtel, Farbe (Rahmen)',ro:'Tencuieli, gleturi, vopsele (cadru)'},'LF','10.01, 12.01, 16.01','T09',1],
+ ['P5',{de:'Fliesen und Abdichtung',ro:'Faianță, gresie și hidroizolații'},'LF','11.01, 11.02','T10',3],
+ ['P6',{de:'Bodenbeläge',ro:'Pardoseli'},'LF','13.01','T12',3],
+ ['P7',{de:'Wohnungseingangs- und Innentüren',ro:'Uși de intrare și interioare'},'LF','14.01, 14.02','T13',8],
+ ['P4',{de:'Sanitärobjekte und Armaturen',ro:'Obiecte sanitare și baterii'},'LF','06.03','T14',4],
+ ['P8',{de:'Küchen',ro:'Bucătării'},'LF','15.01','T14',8],
+ ['P15',{de:'Rauchmelder, Sprechanlage, Briefkästen, Schließanlage',ro:'Detectoare, interfon, cutii poștale, sistem închidere'},'LF','05.05, 05.06, 16.03','T14',4]
+];
+
+/* ---------- state (db overrides) ---------- */
+let OV={}; let db=null; let canWrite=false; let xlsxDl=null;
+function ov(id){ return OV[id]||{}; }
+function sched(tid){ const base=TASKS.find(x=>x[0]===tid)[2]; const o=ov('S_'+tid); return {N:o.N||base.N,S:o.S||base.S,M:o.M||base.M}; }
+const pending={};
+function save(id,patch){ OV[id]=Object.assign({},ov(id),patch); if(!db) return;
+  clearTimeout(pending[id]); pending[id]=setTimeout(async()=>{ try{ await db.collection('rows').doc(id).set(OV[id]); delete pending[id]; }catch(e){ delete pending[id]; document.getElementById('sync').textContent=(e&&e.message)||'Fehler'; } },600); }
+
+/* ---------- derived dates ---------- */
+function pkDates(p){ const sc=sched(p[4]); const s=Math.min(sc.N[0],sc.S[0]); const needC=calOf(s); const lead=p[5];
+  const need=monday(needC); const dec=new Date(need); dec.setDate(dec.getDate()-7*lead);
+  const vor=new Date(dec); vor.setDate(vor.getDate()-7); const off=new Date(vor); off.setDate(off.getDate()-7); const req=new Date(off); req.setDate(req.getDate()-14);
+  return {need,dec,vor,off,req}; }
+function cls(d){ const diff=(d-TODAY)/864e5; return diff<0?'late':(diff<=14?'soon':''); }
+function dcell(d){ const c=cls(d); return `<span class="${c}">${fmt(d)}</span>`; }
+function endOf(z){ let m=0; TASKS.forEach(x=>{ const v=sched(x[0])[z]; m=Math.max(m,calOf(v[0]+v[1]-1)); }); const d=monday(m); d.setDate(d.getDate()+4); return d; }
+
+/* ---------- render ---------- */
+let TAB=0; try{ TAB=+localStorage.getItem('bp_tab')||0; }catch(e){}
+let fG='', fE='', tplP='P2';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function header(){
+  document.getElementById('h1').textContent=t('h1');
+  const m=t('meta'); let h=''; for(let i=0;i<m.length;i+=2) h+=`<span>${m[i]}: <b>${m[i+1]}</b></span>`;
+  document.getElementById('meta').innerHTML=h+`<span class="wip">${t('wip')}</span>`;
+  document.getElementById('tabs').innerHTML=t('tabs').map((x,i)=>`<button role="tab" id="tab${i}" aria-selected="${i===TAB}" data-t="${i}">${x}</button>`).join('');
+  document.getElementById('l-de').setAttribute('aria-pressed',L==='de'); document.getElementById('l-ro').setAttribute('aria-pressed',L==='ro');
+  document.documentElement.lang=L;
+  document.getElementById('sync').textContent=db?(canWrite?t('syncOn'):t('syncOff')):'';
+}
+function render(){ header(); const f=[ov1,units,lv,pk,cmp,tpl][TAB]||ov1; /* Bauablaufplan ausgeblendet bis Termine feststehen */ document.getElementById('main').innerHTML=`<section class="panel">${f()}</section>`;
+  if(!canWrite) document.querySelectorAll('#main [data-id],#main [data-o],#main [data-z],#addOff,#resetS').forEach(e=>{ e.disabled=true; }); }
+
+function ov1(){
+  const stc=k=>PK.filter(p=>(ov('P_'+p[0]).st||0)>=k).length;
+  const app=PK.filter(p=>(ov('P_'+p[0]).st||0)===3);
+  const logs=((ov('LOG').items)||[]).slice().reverse().slice(0,12);
+  const nx=(ov('NEXT').items)||[];
+  return `<p class="note">${t('draft')}</p>
+  <div class="kpis">
+   <div class="kpi"><div class="v">17</div><div class="l">${t('kUnits')}</div></div>
+   <div class="kpi"><div class="v">876,58</div><div class="l">${t('kFn')}</div></div>
+   <div class="kpi"><div class="v">${stc(1)} / ${PK.length}</div><div class="l">${t('kReq')}</div></div>
+   <div class="kpi"><div class="v">${stc(2)} / ${PK.length}</div><div class="l">${t('kOff')}</div></div>
+   <div class="kpi"><div class="v ${app.length?'soon':''}">${app.length}</div><div class="l">${t('kApp')}</div></div>
+  </div>
+  ${nx.length?`<div class="box"><h3>${t('next')}</h3><div class="tblwrap" style="border:0"><table><tbody>${nx.map((x,i)=>`<tr><td class="mono">${i+1}</td><td>${esc(x[L]||x.de||'')}</td><td class="who">${esc(x.who||'')}</td><td><span class="chip ${x.st===2?'nx':x.st===1?'fx':'lf'}">${t('nst')[x.st||0]}</span></td></tr>`).join('')}</tbody></table></div></div>`:''}
+  <div class="grid2">
+   <div class="box"><h3>${t('log')}</h3>${logs.length?`<ul class="q">${logs.map(x=>`<li><span class="who">${esc(x.d||'')}</span> ${esc(x[L]||x.de||'')}</li>`).join('')}</ul>`:`<p class="note">${t('logEmpty')}</p>`}</div>
+   <div class="box"><h3>${t('urgent')}</h3>${app.length?`<ul class="q">${app.map(p=>`<li><span class="mono">${p[0]}</span> ${p[1][L]}${ov('P_'+p[0]).note?` <span class="sub">${esc(ov('P_'+p[0]).note)}</span>`:''}</li>`).join('')}</ul>`:`<p class="note">${t('appNone')}</p>`}</div>
+  </div>
+  <div class="grid2">
+   <div class="box"><h3>${t('steps')}</h3><ol class="steps">${t('stepsList').map(s=>`<li>${s[0]} <span class="who">· ${s[1]}</span></li>`).join('')}</ol></div>
+   <div class="box"><h3>${t('openQ')}</h3><ul class="q">${t('openQList').map(x=>`<li>${x}</li>`).join('')}</ul></div>
+  </div>
+  <div class="grid2">
+   <div class="box"><h3>${t('roles')}</h3><ul class="q">${t('rolesTxt').map(x=>`<li>${x}</li>`).join('')}</ul></div>
+   <div class="box"><h3>${t('assum')}</h3><ul class="q">${t('assumList').map(x=>`<li>${x}</li>`).join('')}</ul></div>
+  </div>`;
+}
+function exChip(e){ const c={NX:'nx',FX:'fx',LF:'lf',MIX:'fx',KB:'lf'}[e]; return `<span class="chip ${c}">${T.exec[e][L]}</span>`; }
+function sel(id,opts,val,kind){ return `<select id="${kind}_${id}" data-id="${id}" data-k="st" aria-label="Status">${opts.map((o,i)=>`<option value="${i}" ${i==val?'selected':''}>${o}</option>`).join('')}</select>`; }
+function units(){
+  const c=t('uCols'); let rows='';
+  ['N','S','M'].forEach(z=>{ const us=UNITS.filter(u=>u[1]===z); const sum=us.reduce((a,u)=>a+(u[4]||0),0);
+    rows+=`<tr class="grp"><td colspan="5"><span class="sw" style="background:var(--${z==='N'?'vhn':z==='S'?'vhs':'mh'})"></span>${T.zones[z][L]}</td><td colspan="2" class="mono" style="text-align:right">${t('uSum')}: ${sum.toLocaleString('de-DE',{minimumFractionDigits:2})} m²</td></tr>`;
+    us.forEach(u=>{ const id='U_'+u[0].replace(/[^A-Za-z0-9]/g,'_'); const o=ov(id);
+      rows+=`<tr><td style="white-space:nowrap;font-weight:600">${u[0]}</td><td class="mono">${u[2]}</td><td class="desc">${u[3]}</td><td class="num">${u[4]==null?'—':u[4].toLocaleString('de-DE',{minimumFractionDigits:2})}</td><td>${u[5][L]}</td><td><input class="note-in" style="min-width:90px" id="g_${id}" data-id="${id}" data-k="grp" value="${esc(o.grp||'')}" aria-label="${c[5]}"></td><td><input class="note-in" id="n_${id}" data-id="${id}" data-k="note" value="${esc(o.note||'')}" aria-label="${c[6]}"></td></tr>`; }); });
+  return `<p class="note">${t('uNote')}</p><div class="tblwrap"><table><thead><tr>${c.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function lv(){
+  const gOpts=`<option value="">${t('all')}</option>`+GEW.map(g=>`<option value="${g[0]}" ${fG===g[0]?'selected':''}>${g[0]} ${g[1][L]}</option>`).join('');
+  const eOpts=`<option value="">${t('all')}</option>`+['NX','FX','LF','KB'].map(e=>`<option value="${e}" ${fE===e?'selected':''}>${T.exec[e][L]}</option>`).join('');
+  const c=t('cols'); let rows='';
+  GEW.forEach(g=>{ if(fG&&fG!==g[0]) return; const items=LV.filter(r=>r[1]===g[0]&&(!fE||r[7]===fE)); if(!items.length) return;
+    rows+=`<tr class="grp"><td colspan="9">${g[0]} · ${g[1][L]}</td></tr>`;
+    items.forEach(r=>{ const o=ov('L_'+r[0]); const alt=L==='de'?r[3]:r[2];
+      rows+=`<tr><td class="mono">${r[0]}</td><td class="desc">${L==='de'?r[2]:r[3]}<span class="sub">${alt}</span></td><td>${L==='de'?r[4]:r[5]}</td><td class="mono">${r[6]}</td><td>${exChip(r[7])}</td><td class="mono">${r[8]||'—'}</td><td>${r[9]?`<span class="chip dec">${t('decY')}</span>`:''}</td><td>${sel('L_'+r[0],t('st'),o.st||0,'s')}</td><td><input class="note-in" id="n_L_${r[0]}" data-id="L_${r[0]}" data-k="note" value="${esc(o.note||'')}" aria-label="${c[8]}"></td></tr>`; });
+  });
+  return `<div class="filters"><label>${t('fGew')} <select id="fG">${gOpts}</select></label><label>${t('fEx')} <select id="fE">${eOpts}</select></label></div>
+  <div class="tblwrap"><table><thead><tr>${c.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="note">${t('draft')}</p>`;
+}
+function gantt(){
+  const W=26; const width=NCAL*W; const nowC=Math.floor((TODAY-BASE)/(7*864e5));
+  let cols=''; for(let c=0;c<NCAL;c++){ cols+=`<div class="g-col ${HOL.includes(c)?'hol':''}" style="left:${c*W}px;width:${W}px"></div>`; }
+  if(nowC>=0&&nowC<NCAL){ const frac=((TODAY-BASE)/(7*864e5))*W; cols+=`<div class="g-col now" style="left:${frac}px;width:0" title="${t('now')}"></div>`; }
+  let head=''; let lastM=-1, lastX=-9; for(let c=0;c<NCAL;c++){ const d=monday(c); head+=`<div class="g-wk" style="left:${c*W}px;width:${W}px">${isoWk(d)}</div>`; if(d.getMonth()!==lastM){ lastM=d.getMonth(); if(c-lastX<3) continue; lastX=c; head+=`<div class="g-mo" style="left:${c*W+2}px">${d.toLocaleDateString(L==='de'?'de-DE':'ro-RO',{month:'short',year:'2-digit'})}</div>`; } }
+  let rows=`<div class="g-row g-head"><div class="g-lab">KW</div><div class="g-track" style="width:${width}px">${cols}${head}</div></div>`;
+  TASKS.forEach(x=>{ const s=sched(x[0]); let bars='';
+    ['N','S','M'].forEach(z=>{ segs(s[z][0],s[z][1]).forEach(g=>{ bars+=`<div class="bar ${z}" style="left:${g[0]*W+1}px;width:${(g[1]-g[0])*W-2}px" title="${T.zones[z][L]}"></div>`; }); });
+    rows+=`<div class="g-row"><div class="g-lab">${x[1][L]}<span class="sub">${x[0]} · ${L==='de'?x[1].ro:x[1].de}</span></div><div class="g-track" style="width:${width}px">${cols}${bars}</div></div>`; });
+  const ec=t('editCols'); let ed='';
+  TASKS.forEach(x=>{ const s=sched(x[0]); ['N','S','M'].forEach(z=>{ const a=calOf(s[z][0]), b=calOf(s[z][0]+s[z][1]-1); const e=new Date(monday(b)); e.setDate(e.getDate()+4);
+    ed+=`<tr><td>${z==='N'?x[1][L]:''}</td><td><span class="sw" style="background:var(--${z==='N'?'vhn':z==='S'?'vhs':'mh'})"></span>${T.zones[z][L]}</td><td><input class="wk" type="number" min="0" max="60" id="e_${x[0]}_${z}_0" data-t="${x[0]}" data-z="${z}" data-i="0" value="${s[z][0]}"></td><td><input class="wk" type="number" min="1" max="30" id="e_${x[0]}_${z}_1" data-t="${x[0]}" data-z="${z}" data-i="1" value="${s[z][1]}"></td><td class="mono">${fmt(monday(a))}</td><td class="mono">${fmt(e)}</td></tr>`; }); });
+  return `<div class="legend"><span><span class="sw" style="background:var(--vhn)"></span>${T.zones.N[L]}</span><span><span class="sw" style="background:var(--vhs)"></span>${T.zones.S[L]}</span><span><span class="sw" style="background:var(--mh)"></span>${T.zones.M[L]}</span><span><span class="sw" style="background:var(--hol);border:1px solid var(--line)"></span>${t('hol')}</span></div>
+  <div class="gantt">${rows}</div>
+  <p class="note">${t('draft')}</p>
+  <details class="box"><summary>${t('edit')}</summary><div class="tblwrap"><table><thead><tr>${ec.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${ed}</tbody></table></div><div><button id="resetS">${t('reset')}</button></div></details>`;
+}
+function pk(){
+  const c=t('pcols');
+  const rows=PK.map(p=>{ const o=ov('P_'+p[0]);
+    return `<tr><td class="mono">${p[0]}</td><td class="desc">${p[1][L]} ${exChip(p[2])}<span class="sub">${L==='de'?p[1].ro:p[1].de}</span></td><td class="mono">${p[3]}</td><td class="num">${p[5]} ${t('wk')}</td><td>${sel('P_'+p[0],t('pst'),o.st||0,'s')}</td><td><input class="note-in" id="n_P_${p[0]}" data-id="P_${p[0]}" data-k="note" value="${esc(o.note||'')}" aria-label="${c[5]}"></td></tr>`; }).join('');
+  return `<p class="note">${t('pnote')}</p><div class="tblwrap"><table><thead><tr>${c.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function cmp(){
+  const p=PK.find(x=>x[0]===tplP)||PK[0]; const o=ov('O_'+p[0]); const off=(o.o||[]).concat([{},{},{},{}]).slice(0,Math.max(3,(o.o||[]).length));
+  const nums=off.map(x=>parseFloat(String(x.n||'').replace(/\./g,'').replace(',','.'))); const valid=nums.filter(n=>n>0); const min=valid.length?Math.min(...valid):null;
+  const c=t('cmpCols'); const eur=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const rows=off.map((x,i)=>{ const n=nums[i]; const isMin=min!==null&&n===min;
+    const inp=(f,w)=>`<input class="note-in" style="min-width:${w}px" id="o_${p[0]}_${i}_${f}" data-o="${p[0]}" data-r="${i}" data-f="${f}" value="${esc(x[f]||'')}" aria-label="${f}">`;
+    return `<tr><td class="mono">${i+1}</td><td>${inp('f',150)}</td><td>${inp('nr',130)}</td><td>${inp('g',95)}</td><td>${inp('n',100)}${isMin?` <span class="chip nx">${t('cheap')}</span>`:(n>0&&min?`<span class="sub">+${eur(n-min)} € (+${((n/min-1)*100).toFixed(1)} %)</span>`:'')}</td><td>${inp('l',80)}</td><td>${inp('b',200)}</td><td>${inp('src',120)}</td>
+    <td><input type="radio" name="rec_${p[0]}" id="rec_${p[0]}_${i}" data-o="${p[0]}" data-sel="rec" value="${i}" ${o.rec===i?'checked':''} aria-label="${c[4]}"></td>
+    <td><input type="radio" name="pick_${p[0]}" id="pick_${p[0]}_${i}" data-o="${p[0]}" data-sel="pick" value="${i}" ${o.pick===i?'checked':''} aria-label="${c[5]}"></td></tr>`; }).join('');
+  return `<div class="filters"><label>${t('tplPick')} <select id="tplSel">${PK.map(x=>`<option value="${x[0]}" ${x[0]===p[0]?'selected':''}>${x[0]} · ${x[1][L]}</option>`).join('')}</select></label><button id="addOff">+ ${c[0]}</button></div>
+  <p class="note">${t('cmpNote')}</p>
+  <div class="tblwrap"><table><thead><tr><th>#</th>${c.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function tplText(p,lang){
+  const d=pkDates(p); const pos=LV.filter(r=>r[8]===p[0]);
+  if(lang==='de') return `Betreff: Angebotsanfrage ${p[1].de} — Catharina-Nacke-Hof, Große Straße 48, 24937 Flensburg
+
+Sehr geehrte Damen und Herren,
+
+für die Sanierung des Vorder- und Mittelhauses (Bauherr: Meesenburg Grundstücks KG), deren Ausführung wir verantworten, bitten wir um ein Angebot für folgende Leistungen/Lieferungen:
+
+${pos.map(r=>`• Pos. ${r[0]} — ${r[2]} — Menge: ${r[4]}`).join('\n')}
+
+Umfang: 17 Wohneinheiten und 2 Gewerbeeinheiten, Ausführung in drei Abschnitten (Vorderhaus Nord, Vorderhaus Süd, Mittelhaus).
+Ausstattungsstandard: Normalstandard (solide, wirtschaftlich; kein gehobener Standard), Details gemäß beiliegender Standardliste.
+
+Bitte angeben:
+• Einzelpreise netto je Position und Gesamtpreis
+• Lieferzeit ab Auftrag und Möglichkeit von Teillieferungen je Bauabschnitt
+• Konditionen für Rahmenvereinbarung mit Abruf über die Gesamtmenge
+• Gültigkeit des Angebots
+
+Erster Liefer-/Einsatztermin: [TT.MM.JJJJ]
+Angebotsabgabe bis: [TT.MM.JJJJ]
+
+Bitte senden Sie Ihr Angebot an: Tudor Bufnea, NEXTEPCONCEPT UG, Am Schwimmbad 1, 24963 Tarp, office@nextepconcept.eu
+
+Mit freundlichen Grüßen`;
+  return `Subiect: Cerere de ofertă ${p[1].ro} — Catharina-Nacke-Hof, Große Straße 48, 24937 Flensburg
+
+Stimate doamne și domni,
+
+pentru renovarea Vorderhaus și Mittelhaus (beneficiar: Meesenburg Grundstücks KG), a cărei execuție o coordonăm, vă rugăm să ne transmiteți o ofertă pentru următoarele lucrări/livrări:
+
+${pos.map(r=>`• Poz. ${r[0]} — ${r[3]} — cantitate: ${r[5]}`).join('\n')}
+
+Volum: 17 apartamente și 2 spații comerciale, execuție în trei tronsoane (Vorderhaus Nord, Vorderhaus Sud, Mittelhaus).
+Standard de dotare: standard normal (solid, economic; nu standard ridicat), detalii conform listei-standard anexate.
+
+Vă rugăm să precizați:
+• prețuri unitare nete pe poziție și preț total
+• termen de livrare de la comandă și posibilitatea livrărilor parțiale pe tronson
+• condiții pentru un contract-cadru cu ridicări din cantitatea totală
+• valabilitatea ofertei
+
+Prima livrare/intervenție: [ZZ.LL.AAAA]
+Termen depunere ofertă: [ZZ.LL.AAAA]
+
+Vă rugăm să trimiteți oferta la: Tudor Bufnea, NEXTEPCONCEPT UG, Am Schwimmbad 1, 24963 Tarp, office@nextepconcept.eu
+
+Cu stimă`;
+}
+function tpl(){
+  const p=PK.find(x=>x[0]===tplP)||PK[0];
+  return `<div class="filters"><label>${t('tplPick')} <select id="tplSel">${PK.map(x=>`<option value="${x[0]}" ${x[0]===p[0]?'selected':''}>${x[0]} · ${x[1][L]}</option>`).join('')}</select></label><button id="copyTpl">${t('copy')}</button></div>
+  <p class="note">${t('tplLang')}</p>
+  <div class="grid2"><div class="box"><h3>Deutsch</h3><div class="tpl" id="tplDe">${esc(tplText(p,'de'))}</div></div>
+  <div class="box"><h3>Română</h3><div class="tpl">${esc(tplText(p,'ro'))}</div></div></div>`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.t!==undefined && b.getAttribute('role')==='tab'){ TAB=+b.dataset.t; try{localStorage.setItem('bp_tab',TAB);}catch(x){} render(); }
+  else if(b.id==='l-de'||b.id==='l-ro'){ L=b.id.slice(2); try{localStorage.setItem('bp_lang',L);}catch(x){} render(); }
+  else if(b.id==='copyTpl'){ const txt=document.getElementById('tplDe').textContent; try{ await navigator.clipboard.writeText(txt); b.textContent=t('copied'); }catch(x){ const r=document.createRange(); r.selectNodeContents(document.getElementById('tplDe')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); } }
+  else if(b.id==='resetS'){ TASKS.forEach(x=>{ if(OV['S_'+x[0]]){ OV['S_'+x[0]]={}; if(db) db.collection('rows').doc('S_'+x[0]).set({}).catch(()=>{}); } }); render(); }
+  else if(b.id==='xls'){ exportXls(); }
+  else if(b.id==='addOff'){ const o=ov('O_'+tplP); const arr=(o.o||[]).slice(); while(arr.length<3) arr.push({}); arr.push({}); save('O_'+tplP,{o:arr}); render(); }
+});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.id==='fG'){ fG=el.value; render(); return; }
+  if(el.id==='fE'){ fE=el.value; render(); return; }
+  if(el.id==='tplSel'){ tplP=el.value; render(); return; }
+  if(el.dataset.k==='st'){ save(el.dataset.id,{st:+el.value}); if(TAB!==2) render(); return; }
+  if(el.dataset.o&&el.dataset.f){ const id='O_'+el.dataset.o; const arr=(ov(id).o||[]).map(x=>Object.assign({},x)); const r=+el.dataset.r; while(arr.length<=r) arr.push({}); arr[r][el.dataset.f]=el.value; save(id,{o:arr}); if(el.dataset.f==='n') render(); return; }
+  if(el.dataset.sel){ save('O_'+el.dataset.o,{[el.dataset.sel]:+el.value}); return; }
+  if(el.dataset.k==='note'||el.dataset.k==='grp'){ save(el.dataset.id,{[el.dataset.k]:el.value}); return; }
+  if(el.dataset.z){ const id='S_'+el.dataset.t; const cur=sched(el.dataset.t); const v=[...cur[el.dataset.z]]; const n=Math.max(el.dataset.i==='1'?1:0,Math.round(+el.value||0)); v[+el.dataset.i]=n; save(id,{[el.dataset.z]:v}); const open=document.querySelector('details')?.open; render(); if(open) document.querySelector('details').open=true; }
+});
+
+/* ---------- Excel ---------- */
+function exportXls(){
+  if(!window.XLSX||!xlsxDl) return;
+  const wb=XLSX.utils.book_new();
+  const lvRows=[['Pos.','Gewerk','Beschreibung (DE)','Descriere (RO)','Menge','Cantitate','Zone','Ausführung','Paket','Entscheidung Bauherr','Status','Notiz']];
+  LV.forEach(r=>{ const g=GEW.find(x=>x[0]===r[1]); const o=ov('L_'+r[0]); lvRows.push([r[0],g[1].de,r[2],r[3],r[4],r[5],r[6],T.exec[r[7]].de,r[8],r[9]?'ja':'',T.st.de[o.st||0],o.note||'']); });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(lvRows),'Leistungsverzeichnis');
+  const sRows=[['ID','Vorgang (DE)','Activitate (RO)','Zone','Start','Ende','Start-KW','Dauer Wo.']];
+  TASKS.forEach(x=>{ const s=sched(x[0]); ['N','S','M'].forEach(z=>{ const a=calOf(s[z][0]), b=calOf(s[z][0]+s[z][1]-1); const e=new Date(monday(b)); e.setDate(e.getDate()+4); sRows.push([x[0],x[1].de,x[1].ro,T.zones[z].de,fmt(monday(a)),fmt(e),isoWk(monday(a)),s[z][1]]); }); });
+  /* Bauablaufplan-Export ausgeblendet */
+  const pRows=[['Paket','Leistung (DE)','Lucrare (RO)','Art','LV-Pos.','Lieferzeit Wo. (Annahme)','Status','Notiz']];
+  PK.forEach(p=>{ const o=ov('P_'+p[0]); pRows.push([p[0],p[1].de,p[1].ro,T.exec[p[2]].de,p[3],p[5],T.pst.de[o.st||0],o.note||'']); });
+  const uRows=[['Einheit','Zone','Geschoss','Räume','Fn m² (Zeichnung)','Hinweis','Priorität Vermietung','Notiz']];
+  UNITS.forEach(u=>{ const o=ov('U_'+u[0].replace(/[^A-Za-z0-9]/g,'_')); uRows.push([u[0],T.zones[u[1]]?T.zones[u[1]].de:u[1],u[2],u[3],u[4]==null?'':u[4],u[5].de,o.grp||'',o.note||'']); });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(uRows),'Wohnungen');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(pRows),'Anfrageliste');
+  const cRows=[['Paket','Anbieter','Angebot Nr. / Datum','Gültig bis','Netto €','Lieferzeit','Abweichungen / Bemerkung','Quelle','Empfehlung Tudor','Auswahl Johan']];
+  PK.forEach(p=>{ const o=ov('O_'+p[0]); (o.o||[]).forEach((x,i)=>{ if(x.f||x.n) cRows.push([p[0],x.f||'',x.nr||'',x.g||'',x.n||'',x.l||'',x.b||'',x.src||'',o.rec===i?'x':'',o.pick===i?'x':'']); }); });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(cRows),'Preisspiegel');
+  const out=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  xlsxDl.save({filename:'Bauprogramm_Etappe2_VH-MH.xlsx',data:new Blob([out],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}).catch(err=>{ if(err&&err.code!=='cancelled'&&err.code!=='declined') document.getElementById('sync').textContent=t('xlsFail'); });
+}
+
+render();
+
+/* ---------- Daten aus data.json laden (statische Version) ---------- */
+fetch('data.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{ OV=d||{}; render(); }).catch(()=>{ document.getElementById('sync').textContent='data.json konnte nicht geladen werden.'; });
+})();
+</script>
+
+</body></html>
